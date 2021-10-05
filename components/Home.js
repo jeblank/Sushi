@@ -11,16 +11,20 @@ const Home = ({navigation}) => {
       </View>
 
       <View style={styles.buttons}>
-        <Button title="About" 
+        <Button title="About"
                 onPress = {() =>
                   navigation.navigate('About', { name: 'Jane', greeting:'Hi!' })
                 } />
-        <Button title="Menu"
-                onPress = {() => 
-                  navigation.navigate('Menu')
+        <Button title="Order"
+                onPress = {() =>
+                  navigation.navigate('Order')
                 } />
-        <Button title="Kitchen"
-                onPress = {() => 
+        <Button title="Cart"
+                onPress = {() =>
+                  navigation.navigate('Cart')
+                } />
+        <Button title="Kitchen Login"
+                onPress = {() =>
                   navigation.navigate('Kitchen')
                 } />
       </View>
@@ -43,14 +47,14 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 20,
   },
-  title: { 
+  title: {
     fontWeight: "bold",
     fontSize: 20,
     textAlign: "center",
     fontFamily: "Cochin"
   },
-  buttons: { 
-    flexDirection: 'row', 
+  buttons: {
+    flexDirection: 'row',
     justifyContent: 'space-around',
     paddingBottom: 50,
   },

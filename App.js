@@ -10,8 +10,9 @@ import ProfileScreenDemo from './components/ProfileScreen_Demo';
 
 import Home from './components/Home';
 import About from './components/About';
-import Menu from './components/Menu';
+import Order from './components/Order';
 import Kitchen from './components/Kitchen';
+import Cart from './components/Cart';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,15 +23,11 @@ export default function App() {
 
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="About" component={About} />
-        <Stack.Screen name="Menu" component={Menu} />
+        <Stack.Screen name="Order" component={Order} />
+        <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="Kitchen" component={Kitchen} />
 
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-
-
-
-// The parameters of the function are a JSON object here
