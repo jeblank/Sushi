@@ -13,7 +13,7 @@ const Home = ({navigation}) => {
       <View style={styles.buttons}>
         <Button title="About"
                 onPress = {() =>
-                  navigation.navigate('About', { name: 'Jane', greeting:'Hi!' })
+                  navigation.navigate('About')
                 } />
         <Button title="Order"
                 onPress = {() =>
@@ -21,7 +21,7 @@ const Home = ({navigation}) => {
                 } />
         <Button title="Cart"
                 onPress = {() =>
-                  navigation.navigate('Cart')
+                  navigation.navigate('Cart', {tableNum: 10})
                 } />
         <Button title="Kitchen Login"
                 onPress = {() =>

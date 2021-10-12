@@ -1,16 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button} from 'react-native';
 
-const MenuItem = ({category, items}) => (
+const MenuItem = ({category, items, addItemToOrder}) => (
   <View style={styles.item}>
     <Text style={styles.category}>{category}</Text>
-
     { items.map((x) => {
       if (x.description != "temp") {
         return (
           <View style={{flexDirection: "row", paddingTop: 10, }}>
             <View styles={{flexDirection: "row", textAlign: 'center'}}>
-              <Button title="Add"/>
+              <Button title="Add"
+                      onPress={() => addItemToOrder(x.title)} />
+
             </View>
             <View style={styles.sushiRoll}>
               <Text style={{fontWeight: "bold"}}>{x.title}</Text>
@@ -18,12 +19,13 @@ const MenuItem = ({category, items}) => (
             </View>
           </View>
         )
-
       } else {
         return (
           <View style={{flexDirection: "row", paddingTop: 10, }}>
             <View styles={{flexDirection: "row", textAlign: 'center'}}>
-              <Button title="Add"/>
+              <Button title="Add"
+                      onPress={() => addItemToOrder(x.title)} />
+
             </View>
             <View style={styles.sushiRoll}>
               <Text style={{fontWeight: "bold"}}>{x.title}</Text>
@@ -31,7 +33,6 @@ const MenuItem = ({category, items}) => (
           </View>
         )
       }
-
     }) }
   </View>
 );
@@ -49,8 +50,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   sushiRoll: {
-    //backgroundColor: '#f9c2ff',
-    //paddingTop: 10,
     paddingLeft: 10
   }
 });
