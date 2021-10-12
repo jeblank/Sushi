@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Image, Button, TextInput} from 'react-native';
+import { Text, View, StyleSheet, Image, Button, TextInput, SectionList } from 'react-native';
 import { useValue } from './ValueContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,14 +7,20 @@ const Cart = (props) => {
   const [order, setOrder] = useState([]);
   const [notes, setNotes] = useState("");
   const [history, setHistory] = useState();
-  const [showHistory, setShowHistory] = useState(true);
+  const [showHistory, setShowHistory] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState(false);
+  const tableNum = props.route.params.tableNum;
 
-  const tableNum = props.route.params.tableNum
-  const {currentValue} = useValue();
+  const {currentValue, setCurrentValue} = useValue();
   const currOrderArr = currentValue.currOrder;
+  const updateData = () => {
+    setCurrentValue([]);
+  }
+
+  console.log(props)
 
   let currOrderArrView = ""
-  if (currOrderArr.length === 0) {
+  if (currOrderArr == undefined || currOrderArr.length === 0) {
     currOrderArrView =
       <View>
         <Text style={{textAlign: 'center'}}>Your cart is empty!</Text>
@@ -41,7 +47,7 @@ const Cart = (props) => {
         setHistory(json)
       } else {
         console.log("just read a null value from storage")
-        setHistory([])
+        setHistory({ data: [] })
       }
     } catch(e) {
       console.log(e)
@@ -50,7 +56,10 @@ const Cart = (props) => {
 
   const storeData = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value)
+      console.log("value: ", value)
+      console.log("updated value: ", { data: value })
+      const updatedValue = { data: value }
+      const jsonValue = JSON.stringify(updatedValue)
       await AsyncStorage.setItem('@history', jsonValue)
       console.log('just stored ', jsonValue)
     } catch(e) {
@@ -68,7 +77,7 @@ const Cart = (props) => {
   }
 
   let submitView = ""
-  if (currOrderArr.length != 0) {
+  if (currOrderArr != undefined && currOrderArr.length != 0) {
     submitView =
       <View>
         <View style = {{paddingTop: 10}}>
@@ -84,65 +93,97 @@ const Cart = (props) => {
                   console.log("notes: ", notes)
                   // Store this order in async storage for history
                   const newHistory =
-                    history.concat({
+                    history.data.concat({
                       'order': currOrderArr,
-                      // add notes here
+                      'notes': notes,
+                      'timestamp': "Temp Timestamp Entry"
                     })
                     storeData(newHistory)
 
                   // TODO: send this order info to the Kitchen's queue
+
+                  setConfirmationMessage(true)
+                  updateData()
+
                 })} />
       </View>
+  }
+
+  let confirmationView = ""
+  if (confirmationMessage) {
+    confirmationView =
+    <View>
+      <Text style = {styles.confirmation}>Order Submitted!</Text>
+      <View style = {styles.doneButton}>
+        <Button title = "Done"
+                color = "green"
+                onPress = {(() => {
+                  props.navigation.navigate('Home')
+                })} />
+      </View>
+    </View>
   }
 
   let historyView = ""
   if (showHistory && history) {
     historyView =
-      history.map((entry) => {
+      history.data.map((entry) => {
         return (
-          entry.order.map((item) => {
+          entry.order.map((item) => { // TODO: change this to flatlist?
             return (
-              <Text>{item}</Text>
+              <View>
+                <Text>{entry.timestamp}</Text>
+                <Text>{item}</Text>
+                <Text>{entry.notes}</Text>
+              </View>
             )
           })
         )
       })
   }
+
+  // let historyView = ""
   // if (showHistory && history) {
+  //   {console.log(history)}
   //   historyView =
-  //     history.map((entry) => {
-  //       if (entry.order.length === 1) {
-  //         return (
-  //           <Text>{entry.order}</Text>
-  //         )
-  //       } else {
-  //         return (
-  //           entry.order.map((item) => {
-  //             return (
-  //               <Text>{item}</Text>
-  //             )
-  //           })
-  //         )
-  //       }
-  //     })
+  //     <View>
+  //       <SectionList sections = {history.data}
+  //                    keyExtractor = {(item, index) => index}
+  //                    renderItem={({ item }) => (
+  //                     <View>
+  //                       <Text>{item}</Text>
+  //                     </View>
+  //                   )}
+  //                   renderSectionHeader={({ section: { timestamp } }) => (
+  //                     <Text>{timestamp}</Text>
+  //                   )} />
+  //       </View>
   // }
 
   return (
     <View>
       <Text style = {styles.header}>Current Order for Table Number {tableNum}</Text>
+
       {currOrderArrView}
+
+      {confirmationView}
 
       {submitView}
 
       <View style = {styles.history}>
-        <Button title = "Show/Hide History"
+        <Button title = {showHistory ? "Hide History" : "Show History"}
                 onPress = {(() => {
-                  console.log("show history")
+                  setShowHistory(!showHistory)
                 })}
                 style = {styles.history} />
       </View>
 
       {historyView}
+
+      <Button title = "Clear async memory"
+              onPress = {(() => {
+                clearAll()
+              })} />
 
     </View>
   )
@@ -165,6 +206,19 @@ const styles = StyleSheet.create({
   },
   history: {
     padding: 20
+  },
+  confirmation: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: 'green',
+    paddingTop: 10,
+    fontSize: 15,
+  },
+  doneButton: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
   }
 });
 

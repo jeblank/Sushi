@@ -110,6 +110,7 @@ const Order = ({navigation}) => {
          title = "Next"
          onPress = {() => {
               updateData()
+              navigation.navigate('Cart', {tableNum: 10})
          }}
       />
     </SafeAreaView>
