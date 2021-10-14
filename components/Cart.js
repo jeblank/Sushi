@@ -25,8 +25,6 @@ const Cart = (props) => {
     setCurrentValue([]);
   };
 
-  // console.log(currOrderArr)
-
   let currOrderArrView = "";
   if (currOrderArr == undefined || currOrderArr.length === 0) {
     currOrderArrView = (
@@ -238,6 +236,28 @@ const Cart = (props) => {
     },
   ];
 
+  let tempHistoryView = ""
+  if (showHistory) {
+    tempHistoryView =
+    <View>
+      <SectionList
+        sections={testHistory}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => (
+          <View>
+            <Text>
+              This is a test:{" "}
+              {item.order.map(
+                (obj) => `${obj.quantity} order(s) of ${obj.name}\n`
+              )}
+            </Text>
+          </View>
+        )}
+        renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+      />
+    </View>
+  }
+
   return (
     <View>
       <Text style={styles.header}>
@@ -260,23 +280,7 @@ const Cart = (props) => {
         />
       </View>
 
-      <View>
-        <SectionList
-          sections={testHistory}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => (
-            <View>
-              <Text>
-                This is a test:{" "}
-                {item.order.map(
-                  (obj) => `${obj.quantity} order(s) of ${obj.name}\n`
-                )}
-              </Text>
-            </View>
-          )}
-          renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
-        />
-      </View>
+      {tempHistoryView}
 
       <Button
         title="Clear async memory"
