@@ -22,7 +22,6 @@ const Order = ({navigation}) => {
   let currOrderArrView = ""
   useEffect(() => {
     test = currOrder
-    console.log("test: ", test)
 
     let currOrderArrView =
       test.map((x) => {
@@ -50,14 +49,14 @@ const Order = ({navigation}) => {
       let json = null
       if (jsonValue != null) {
         json = JSON.parse(jsonValue)
-        console.log("json: ", JSON.stringify(json))
+        //console.log("json: ", JSON.stringify(json))
         setCurrOrder(json.currOrder)
       } else {
-        console.log("just read a null value from storage")
+        //console.log("just read a null value from storage")
         setCurrOrder([])
       }
     } catch(e) {
-      console.log(e)
+      console.dir(e)
     }
   }
 
@@ -65,20 +64,53 @@ const Order = ({navigation}) => {
     try {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('@currOrder', jsonValue)
-      console.log('just stored ', jsonValue)
+      //console.log('just stored ', jsonValue)
     } catch(e) {
-      console.log("error in storeData")
+      //console.log("error in storeData")
       console.dir(e)
     }
   }
 
   // ------------------- Helper functions -------------------
-  const addItemToOrder = (item) => {
+  const addItemToOrder = (item, quantity) => {
+    // TODO: see if this item exists in currOrder already. If so,
+    // update the item
+    // if (currOrder.some(e => e.name === item)) {
+    //   console.log("ITEM FOUND")
+    //   console.log(e)
+    // }
+
+    // let index = 0
+    // currOrder.filter(e => {
+    //   console.log("e:", e, "index:", index)
+    //   index += 1
+    //   if (e.name === item) {
+    //     console.log("ITEM FOUND")
+    //   }
+    // })
     var temp = currOrder
-    temp.push(item)
+
+    const matches = (ele) => ele.name === item;
+    const matchingIndex = currOrder.findIndex(matches)
+
+    console.log("temp before if:", temp)
+    if (matchingIndex != -1) {
+      temp.splice(matchingIndex, 1)
+    }
+    console.log("temp after if:", temp)
+
+
+    let entry = {
+      name: item,
+      quantity: quantity
+    }
+    //console.log("entry:", entry)
+
+    temp.push(entry)
+    //console.log("temp:", temp)
     setCurrOrder(temp)
-    console.log("currOrder: ", currOrder)
   }
+
 
   const renderCategory = ({item}) => (
     <View>
@@ -99,7 +131,6 @@ const Order = ({navigation}) => {
 
       <Text>Current Order:</Text>
       {currOrderArrView}
-      {console.log("currOrder: ", currOrder)}
 
       <FlatList
         data={DATA}
@@ -110,6 +141,7 @@ const Order = ({navigation}) => {
          title = "Next"
          onPress = {() => {
               updateData()
+              console.log("currOrder in Order.js:", currOrder)
               navigation.navigate('Cart', {tableNum: 10})
          }}
       />

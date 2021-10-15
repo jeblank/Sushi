@@ -37,7 +37,11 @@ const Cart = (props) => {
     );
   } else {
     currOrderArrView = currOrderArr.map((x) => {
-      return <Text>{x}</Text>;
+      return (
+        <View>
+          <Text>{x.quantity} order(s) of {x.name} [category]</Text>
+        </View>
+      )
     });
   }
 
@@ -51,14 +55,15 @@ const Cart = (props) => {
       let json = null;
       if (jsonValue != null) {
         json = JSON.parse(jsonValue);
-        console.log(
-          "json pulled from async storage: ",
-          json /*JSON.stringify(json)*/
-        );
-        console.log(`Object.keys(json): ${Object.keys(json)}`);
-        console.log(`typeof(json.data[0]): ${typeof json.data[0]}`);
-        console.log(`json.data[0]: ${JSON.stringify(json.data[0])}`);
-        setHistory(json.data);
+        // console.log(
+        //   "json pulled from async storage: ",
+        //   //json
+        //   JSON.stringify(json)
+        // );
+        // console.log(`Object.keys(json): ${Object.keys(json)}`);
+        // console.log(`typeof(json.data[0]): ${typeof json.data[0]}`);
+        // console.log(`json.data[0]: ${JSON.stringify(json.data[0])}`);
+        setHistory(json);
       } else {
         console.log("just read a null value from storage");
         setHistory([]);
@@ -70,10 +75,10 @@ const Cart = (props) => {
 
   const storeData = async (value) => {
     try {
-      console.log("value: ", value);
-      console.log("updated value: ", { data: value });
-      const updatedValue = { data: value };
-      const jsonValue = JSON.stringify(updatedValue);
+      //console.log("value: ", value);
+      //console.log("updated value: ", { data: value });
+      //const updatedValue = { data: value };
+      const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("@history", jsonValue);
       console.log("just stored ", jsonValue);
     } catch (e) {
@@ -109,11 +114,22 @@ const Cart = (props) => {
             console.log("order: ", currOrderArr);
             console.log("notes: ", notes);
             // Store this order in async storage for history
-            const newHistory = history.concat({
-              order: currOrderArr,
-              notes: notes,
-              timestamp: "Temp Timestamp Entry",
-            });
+            // const newHistory = history.concat({
+            //   order: currOrderArr,
+            //   notes: notes,
+            //   timestamp: "Temp Timestamp Entry",
+            // });
+            const newHistory = history.concat(
+              {
+                title: "Jenna's Temp Timestamp",
+                data: [
+                  {
+                    notes: "No wasabi please",
+                    order: currOrderArr,
+                  },
+                ],
+              }
+            );
             storeData(newHistory);
 
             // TODO: send this order info to the Kitchen's queue
@@ -144,119 +160,81 @@ const Cart = (props) => {
     );
   }
 
-  // let historyView = ""
-  // if (showHistory && history) {
-  //   historyView =
-  //     history.data.map((entry) => {
-  //       return (
-  //         entry.order.map((item) => { // TODO: change this to flatlist?
-  //           return (
-  //             <View>
-  //               <Text>{entry.timestamp}</Text>
-  //               <Text>{item}</Text>
-  //               <Text>{entry.notes}</Text>
-  //             </View>
-  //           )
-  //         })
-  //       )
-  //     })
-  // }
 
-  let historyView = "";
-  if (showHistory && history) {
-    {
-      console.log("history: ", history.data);
-    }
-    historyView = (
-      <View>
-        <SectionList
-          sections={history.data}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item }) =>
-            console.log("item.order", item.order)
-            // <View>
-            //   <Text>{item}</Text>
-            // </View>
-          }
-          renderSectionHeader={({ section: { timestamp } }) => (
-            <Text>{timestamp}</Text>
-          )}
-        />
-      </View>
-    );
-  }
-
-  console.log(`history.data: ${history.data}`);
-
-  // const testHistory = [{"order":["Cooked Shrimp","Salmon","White Tuna"],"notes":"This is a test order","timestamp":"Temp Timestamp Entry"}]
-  const testHistory = [
-    {
-      title: "Temp Timestamp Entry",
-      data: [
-        {
-          notes: "This is the first test",
-          order: [
-            {
-              name: "Cooked Shrimp",
-              quantity: 10,
-            },
-            {
-              name: "Salmon",
-              quantity: 10,
-            },
-            {
-              name: "White Tuna",
-              quantity: 1,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Temp Timestamp Entry #2",
-      data: [
-        {
-          notes: "This is the second test",
-          order: [
-            {
-              name: "Raw Shrimp",
-              quantity: 5,
-            },
-            {
-              name: "Haddock",
-              quantity: 4,
-            },
-            {
-              name: "Black Tuna",
-              quantity: 2,
-            },
-          ],
-        },
-      ],
-    },
-  ];
+  // const testHistory = [
+  //   {
+  //     title: "Temp Timestamp Entry",
+  //     data: [
+  //       {
+  //         notes: "This is the first test",
+  //         order: [
+  //           {
+  //             name: "Cooked Shrimp",
+  //             quantity: 10,
+  //           },
+  //           {
+  //             name: "Salmon",
+  //             quantity: 10,
+  //           },
+  //           {
+  //             name: "White Tuna",
+  //             quantity: 1,
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "Temp Timestamp Entry #2",
+  //     data: [
+  //       {
+  //         notes: "This is the second test",
+  //         order: [
+  //           {
+  //             name: "Raw Shrimp",
+  //             quantity: 5,
+  //           },
+  //           {
+  //             name: "Haddock",
+  //             quantity: 4,
+  //           },
+  //           {
+  //             name: "Black Tuna",
+  //             quantity: 2,
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  // ];
 
   let tempHistoryView = ""
   if (showHistory) {
     tempHistoryView =
     <View>
       <SectionList
-        sections={testHistory}
+        sections={history}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
           <View>
+            <Text>Notes: {item.notes}</Text>
             <Text>
-              This is a test:{" "}
               {item.order.map(
                 (obj) => `${obj.quantity} order(s) of ${obj.name}\n`
               )}
             </Text>
           </View>
         )}
-        renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+        renderSectionHeader={({ section: { title } }) =>
+          <View style={{paddingTop: 10}}>
+            <Text>{title}</Text>
+          </View>}
       />
     </View>
   }
+
+  console.log("currValue in Cart.js:", currentValue)
+  console.log("history in Cart.js:", history)
 
   return (
     <View>
@@ -292,18 +270,6 @@ const Cart = (props) => {
   );
 };
 
-// <SectionList sections = {testHistory}
-//              keyExtractor = {(item, index) => index}
-//              renderItem={({ item }) => (
-//                //console.log("item.order", item.order)
-//               <View>
-//                 <Text>{item}</Text>
-//               </View>
-//             )}
-//             renderSectionHeader={({ section: { timestamp } }) => (
-//               <Text>{timestamp}</Text>
-//             )} />
-
 const styles = StyleSheet.create({
   input: {
     height: 40,
@@ -337,3 +303,62 @@ const styles = StyleSheet.create({
 });
 
 export default Cart;
+
+
+
+
+// let historyView = ""
+// if (showHistory && history) {
+//   historyView =
+//     history.data.map((entry) => {
+//       return (
+//         entry.order.map((item) => { // TODO: change this to flatlist?
+//           return (
+//             <View>
+//               <Text>{entry.timestamp}</Text>
+//               <Text>{item}</Text>
+//               <Text>{entry.notes}</Text>
+//             </View>
+//           )
+//         })
+//       )
+//     })
+// }
+
+
+// let historyView = "";
+// if (showHistory && history) {
+//   {
+//     console.log("history: ", history.data);
+//   }
+//   historyView = (
+//     <View>
+//       <SectionList
+//         sections={history.data}
+//         keyExtractor={(item, index) => index}
+//         renderItem={({ item }) =>
+//           console.log("item.order", item.order)
+//           // <View>
+//           //   <Text>{item}</Text>
+//           // </View>
+//         }
+//         renderSectionHeader={({ section: { timestamp } }) => (
+//           <Text>{timestamp}</Text>
+//         )}
+//       />
+//     </View>
+//   );
+// }
+
+
+// <SectionList sections = {testHistory}
+//              keyExtractor = {(item, index) => index}
+//              renderItem={({ item }) => (
+//                //console.log("item.order", item.order)
+//               <View>
+//                 <Text>{item}</Text>
+//               </View>
+//             )}
+//             renderSectionHeader={({ section: { timestamp } }) => (
+//               <Text>{timestamp}</Text>
+//             )} />
