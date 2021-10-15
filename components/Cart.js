@@ -39,7 +39,7 @@ const Cart = (props) => {
     currOrderArrView = currOrderArr.map((x) => {
       return (
         <View>
-          <Text>{x.quantity} order(s) of {x.name} [category]</Text>
+          <Text>{x.quantity} order(s) of {x.name} ({x.category})</Text>
         </View>
       )
     });
@@ -155,7 +155,7 @@ const Cart = (props) => {
             <Text>Notes: {item.notes}</Text>
             <Text>
               {item.order.map(
-                (obj) => `${obj.quantity} order(s) of ${obj.name}\n`
+                (obj) => `${obj.quantity} order(s) of ${obj.name} (${obj.category})\n`
               )}
             </Text>
           </View>
@@ -168,8 +168,8 @@ const Cart = (props) => {
     </View>
   }
 
-  console.log("currValue in Cart.js:", currentValue)
-  console.log("history in Cart.js:", history)
+  //console.log("currValue in Cart.js:", currentValue)
+  //console.log("history in Cart.js:", history)
 
   return (
     <View>

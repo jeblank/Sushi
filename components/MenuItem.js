@@ -13,7 +13,7 @@ const MenuItem = ({category, items, addItemToOrder}) => (
               <TextInput placeholder = "0"
                          onChangeText = {(text) => {
                            //console.log("quantity of ", x.title, parseInt(text))
-                           addItemToOrder(x.title, parseInt(text))
+                           addItemToOrder(x.title, parseInt(text), category)
                          }} />
 
             </View>
@@ -30,7 +30,7 @@ const MenuItem = ({category, items, addItemToOrder}) => (
               <TextInput placeholder = "0"
                          onChangeText = {(text) => {
                            //console.log("quantity of ", x.title, parseInt(text))
-                           addItemToOrder(x.title, parseInt(text))
+                           addItemToOrder(x.title, parseInt(text), category)
                          }} />
 
             </View>

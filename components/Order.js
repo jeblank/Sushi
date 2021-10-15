@@ -72,7 +72,7 @@ const Order = ({navigation}) => {
   }
 
   // ------------------- Helper functions -------------------
-  const addItemToOrder = (item, quantity) => {
+  const addItemToOrder = (item, quantity, category) => {
     var temp = currOrder
     const matches = (ele) => ele.name === item;
     const matchingIndex = currOrder.findIndex(matches)
@@ -82,7 +82,8 @@ const Order = ({navigation}) => {
     }
     let entry = {
       name: item,
-      quantity: quantity
+      quantity: quantity,
+      category: category
     }
 
     temp.push(entry)
