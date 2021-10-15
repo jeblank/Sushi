@@ -32,13 +32,13 @@ const Order = ({navigation}) => {
   }, [currOrder])
 
 
-
   // ------------------- Context logic -------------------
   const {currentValue, setCurrentValue} = useValue();
   const updateData = () => {
     console.log("currOrder in updateData:", currOrder)
     setCurrentValue({currOrder: currOrder})
   }
+
 
   // ------------------- Async storage logic -------------------
   useEffect(() => {getData()}, [])
@@ -73,44 +73,21 @@ const Order = ({navigation}) => {
 
   // ------------------- Helper functions -------------------
   const addItemToOrder = (item, quantity) => {
-    // TODO: see if this item exists in currOrder already. If so,
-    // update the item
-    // if (currOrder.some(e => e.name === item)) {
-    //   console.log("ITEM FOUND")
-    //   console.log(e)
-    // }
-
-    // let index = 0
-    // currOrder.filter(e => {
-    //   console.log("e:", e, "index:", index)
-    //   index += 1
-    //   if (e.name === item) {
-    //     console.log("ITEM FOUND")
-    //   }
-    // })
     var temp = currOrder
-
     const matches = (ele) => ele.name === item;
     const matchingIndex = currOrder.findIndex(matches)
 
-    console.log("temp before if:", temp)
     if (matchingIndex != -1) {
       temp.splice(matchingIndex, 1)
     }
-    console.log("temp after if:", temp)
-
-
     let entry = {
       name: item,
       quantity: quantity
     }
-    //console.log("entry:", entry)
 
     temp.push(entry)
-    //console.log("temp:", temp)
     setCurrOrder(temp)
   }
-
 
   const renderCategory = ({item}) => (
     <View>
@@ -119,6 +96,7 @@ const Order = ({navigation}) => {
                 addItemToOrder = {addItemToOrder} />
     </View>
   );
+
 
   // ------------------- Draw the screen -------------------
   return (

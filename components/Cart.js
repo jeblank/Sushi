@@ -55,14 +55,6 @@ const Cart = (props) => {
       let json = null;
       if (jsonValue != null) {
         json = JSON.parse(jsonValue);
-        // console.log(
-        //   "json pulled from async storage: ",
-        //   //json
-        //   JSON.stringify(json)
-        // );
-        // console.log(`Object.keys(json): ${Object.keys(json)}`);
-        // console.log(`typeof(json.data[0]): ${typeof json.data[0]}`);
-        // console.log(`json.data[0]: ${JSON.stringify(json.data[0])}`);
         setHistory(json);
       } else {
         console.log("just read a null value from storage");
@@ -75,9 +67,6 @@ const Cart = (props) => {
 
   const storeData = async (value) => {
     try {
-      //console.log("value: ", value);
-      //console.log("updated value: ", { data: value });
-      //const updatedValue = { data: value };
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("@history", jsonValue);
       console.log("just stored ", jsonValue);
@@ -113,18 +102,12 @@ const Cart = (props) => {
           onPress={() => {
             console.log("order: ", currOrderArr);
             console.log("notes: ", notes);
-            // Store this order in async storage for history
-            // const newHistory = history.concat({
-            //   order: currOrderArr,
-            //   notes: notes,
-            //   timestamp: "Temp Timestamp Entry",
-            // });
             const newHistory = history.concat(
               {
-                title: "Jenna's Temp Timestamp",
+                title: new Date().toLocaleString(),
                 data: [
                   {
-                    notes: "No wasabi please",
+                    notes: notes,
                     order: currOrderArr,
                   },
                 ],
@@ -159,54 +142,6 @@ const Cart = (props) => {
       </View>
     );
   }
-
-
-  // const testHistory = [
-  //   {
-  //     title: "Temp Timestamp Entry",
-  //     data: [
-  //       {
-  //         notes: "This is the first test",
-  //         order: [
-  //           {
-  //             name: "Cooked Shrimp",
-  //             quantity: 10,
-  //           },
-  //           {
-  //             name: "Salmon",
-  //             quantity: 10,
-  //           },
-  //           {
-  //             name: "White Tuna",
-  //             quantity: 1,
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "Temp Timestamp Entry #2",
-  //     data: [
-  //       {
-  //         notes: "This is the second test",
-  //         order: [
-  //           {
-  //             name: "Raw Shrimp",
-  //             quantity: 5,
-  //           },
-  //           {
-  //             name: "Haddock",
-  //             quantity: 4,
-  //           },
-  //           {
-  //             name: "Black Tuna",
-  //             quantity: 2,
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  // ];
 
   let tempHistoryView = ""
   if (showHistory) {
@@ -306,59 +241,50 @@ export default Cart;
 
 
 
-
-// let historyView = ""
-// if (showHistory && history) {
-//   historyView =
-//     history.data.map((entry) => {
-//       return (
-//         entry.order.map((item) => { // TODO: change this to flatlist?
-//           return (
-//             <View>
-//               <Text>{entry.timestamp}</Text>
-//               <Text>{item}</Text>
-//               <Text>{entry.notes}</Text>
-//             </View>
-//           )
-//         })
-//       )
-//     })
-// }
-
-
-// let historyView = "";
-// if (showHistory && history) {
+// Data structure for the order
+// const testHistory = [
 //   {
-//     console.log("history: ", history.data);
-//   }
-//   historyView = (
-//     <View>
-//       <SectionList
-//         sections={history.data}
-//         keyExtractor={(item, index) => index}
-//         renderItem={({ item }) =>
-//           console.log("item.order", item.order)
-//           // <View>
-//           //   <Text>{item}</Text>
-//           // </View>
-//         }
-//         renderSectionHeader={({ section: { timestamp } }) => (
-//           <Text>{timestamp}</Text>
-//         )}
-//       />
-//     </View>
-//   );
-// }
-
-
-// <SectionList sections = {testHistory}
-//              keyExtractor = {(item, index) => index}
-//              renderItem={({ item }) => (
-//                //console.log("item.order", item.order)
-//               <View>
-//                 <Text>{item}</Text>
-//               </View>
-//             )}
-//             renderSectionHeader={({ section: { timestamp } }) => (
-//               <Text>{timestamp}</Text>
-//             )} />
+//     title: "Temp Timestamp Entry",
+//     data: [
+//       {
+//         notes: "This is the first test",
+//         order: [
+//           {
+//             name: "Cooked Shrimp",
+//             quantity: 10,
+//           },
+//           {
+//             name: "Salmon",
+//             quantity: 10,
+//           },
+//           {
+//             name: "White Tuna",
+//             quantity: 1,
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     title: "Temp Timestamp Entry #2",
+//     data: [
+//       {
+//         notes: "This is the second test",
+//         order: [
+//           {
+//             name: "Raw Shrimp",
+//             quantity: 5,
+//           },
+//           {
+//             name: "Haddock",
+//             quantity: 4,
+//           },
+//           {
+//             name: "Black Tuna",
+//             quantity: 2,
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
