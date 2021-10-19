@@ -252,14 +252,17 @@ export default Cart;
 //           {
 //             name: "Cooked Shrimp",
 //             quantity: 10,
+//             category: "hand roll"
 //           },
 //           {
 //             name: "Salmon",
 //             quantity: 10,
+//             category: "sashimi"
 //           },
 //           {
 //             name: "White Tuna",
 //             quantity: 1,
+//             category: "nigiri"
 //           },
 //         ],
 //       },

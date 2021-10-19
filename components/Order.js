@@ -1,12 +1,7 @@
-// TODO: change this to Order?
-// TODO: Add maybe an accordian list based on the categories (single roll, house sepcial, etc)
-
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, FlatList, TextInput, Button } from 'react-native';
 import SushiMenu from '../assets/menu';
-import MenuItem from './MenuItem';
 import { useValue } from './ValueContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Read in the JSON data file
 const sushiMenu = SushiMenu();
@@ -15,91 +10,109 @@ const DATA = sushiMenu.map((x) => {
 })
 
 const Order = ({navigation}) => {
-  // ------------------- State variables -------------------
-  const [currOrder, setCurrOrder] = useState([]); // TODO: take the empty array out once we finish async storage
-
-  let test = ""
-  let currOrderArrView = ""
-  useEffect(() => {
-    test = currOrder
-
-    let currOrderArrView =
-      test.map((x) => {
-        return (
-          <Text>{x}</Text>
-        )
-      })
-  }, [currOrder])
-
-
-  // ------------------- Context logic -------------------
+  const [currOrder, setCurrOrder] = useState([]);
+  const [str, setStr] = useState("");
   const {currentValue, setCurrentValue} = useValue();
+
+  useEffect(() => {
+    setStr("")
+  });
+
   const updateData = () => {
-    console.log("currOrder in updateData:", currOrder)
     setCurrentValue({currOrder: currOrder})
   }
 
-
-  // ------------------- Async storage logic -------------------
-  useEffect(() => {getData()}, [])
-
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@currOrder')
-      let json = null
-      if (jsonValue != null) {
-        json = JSON.parse(jsonValue)
-        //console.log("json: ", JSON.stringify(json))
-        setCurrOrder(json.currOrder)
-      } else {
-        //console.log("just read a null value from storage")
-        setCurrOrder([])
-      }
-    } catch(e) {
-      console.dir(e)
+  const updateCurrOrderStr = () => {
+    if (currOrder.length === 0) {
+      setStr("empty")
+    } else {
+      setStr(currOrder.join(', '))
     }
   }
 
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem('@currOrder', jsonValue)
-      //console.log('just stored ', jsonValue)
-    } catch(e) {
-      //console.log("error in storeData")
-      console.dir(e)
-    }
-  }
-
-  // ------------------- Helper functions -------------------
   const addItemToOrder = (item, quantity, category) => {
-    var temp = currOrder
-    const matches = (ele) => ele.name === item;
-    const matchingIndex = currOrder.findIndex(matches)
-
-    if (matchingIndex != -1) {
-      temp.splice(matchingIndex, 1)
+    if (!quantity) {
+      quantity = 0
     }
+
+    var temp = currOrder
     let entry = {
       name: item,
       quantity: quantity,
       category: category
     }
 
-    temp.push(entry)
+    // If we find a duplicate entry of this item, remove it before
+    // adding the new quantity
+    const matches = (ele) => (ele.name === item && ele.category === category);
+    const matchingIndex = currOrder.findIndex(matches)
+    if (matchingIndex != -1) {
+      temp.splice(matchingIndex, 1)
+    }
+
+    if (quantity !== 0) {
+      temp.push(entry)
+    }
     setCurrOrder(temp)
+    updateCurrOrderStr()
+  }
+
+  let currOrderView = ""
+  if (currOrder.length === 0) {
+    currOrderView = <Text>Empty!</Text>
+  } else {
+    currOrderView = currOrder.map((item) => {
+      return (
+        <View>
+          <Text>{item.quantity} order(s) of {item.name} ({item.category})</Text>
+        </View>
+      )
+    })
   }
 
   const renderCategory = ({item}) => (
-    <View>
-      <MenuItem category = {item.category}
-                items = {item.items}
-                addItemToOrder = {addItemToOrder} />
+    <View style={styles.item}>
+      <Text style={styles.category}>{item.category}</Text>
+      { item.items.map((x) => {
+        if (x.description != "temp") {
+          return (
+            <View style={{flexDirection: "row", paddingTop: 10, }}>
+              <View styles={{flexDirection: "row", textAlign: 'center'}}>
+                <TextInput placeholder = "0"
+                           onChangeText = {(text) => {
+                             //console.log("quantity of ", x.title, parseInt(text))
+                             addItemToOrder(x.title, parseInt(text), item.category)
+                           }} />
+
+              </View>
+              <View style={styles.sushiRoll}>
+                <Text style={{fontWeight: "bold"}}>{x.title}</Text>
+                <Text>{x.description}</Text>
+              </View>
+            </View>
+          )
+        } else {
+          return (
+            <View style={{flexDirection: "row", paddingTop: 10, }}>
+              <View styles={{flexDirection: "row", textAlign: 'center'}}>
+                <TextInput placeholder = "0"
+                           onChangeText = {(text) => {
+                             //console.log("Quantity text changed")
+                             //console.log("quantity of ", x.title, parseInt(text))
+                             addItemToOrder(x.title, parseInt(text), item.category)
+                           }} />
+
+              </View>
+              <View style={styles.sushiRoll}>
+                <Text style={{fontWeight: "bold"}}>{x.title}</Text>
+              </View>
+            </View>
+          )
+        }
+      }) }
     </View>
   );
 
-
-  // ------------------- Draw the screen -------------------
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Sushi Menu</Text>
@@ -109,7 +122,7 @@ const Order = ({navigation}) => {
       />
 
       <Text>Current Order:</Text>
-      {currOrderArrView}
+      {currOrderView}
 
       <FlatList
         data={DATA}
@@ -119,8 +132,8 @@ const Order = ({navigation}) => {
       <Button
          title = "Next"
          onPress = {() => {
+              console.log("Next pressed")
               updateData()
-              console.log("currOrder in Order.js:", currOrder)
               navigation.navigate('Cart', {tableNum: 10})
          }}
       />
@@ -148,6 +161,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  category: {
+    fontWeight: "bold",
+    fontSize: 25,
+    paddingBottom: 10,
+  },
+  sushiRoll: {
+    paddingLeft: 10
+  }
 });
 
 export default Order;
