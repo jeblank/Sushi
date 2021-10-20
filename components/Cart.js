@@ -25,7 +25,7 @@ const Cart = (props) => {
     setCurrentValue([]);
   };
 
-  let currOrderArrView = "";
+  let currOrderArrView = null;
   if (currOrderArr == undefined || currOrderArr.length === 0) {
     currOrderArrView = (
       <View>
@@ -39,9 +39,11 @@ const Cart = (props) => {
     currOrderArrView = currOrderArr.map((x) => {
       return (
         <View>
-          <Text>{x.quantity} order(s) of {x.name} ({x.category})</Text>
+          <Text>
+            {x.quantity} order(s) of {x.name} ({x.category})
+          </Text>
         </View>
-      )
+      );
     });
   }
 
@@ -84,14 +86,14 @@ const Cart = (props) => {
     }
   };
 
-  let submitView = "";
+  let submitView = null;
   if (currOrderArr != undefined && currOrderArr.length != 0) {
     submitView = (
       <View>
         <View style={{ paddingTop: 10 }}>
           <TextInput
             style={styles.input}
-            placeholder="Special notes for the order"
+            placeholder={"Special notes for the order"}
             onChangeText={(text) => {
               setNotes(text);
             }}
@@ -102,17 +104,15 @@ const Cart = (props) => {
           onPress={() => {
             console.log("order: ", currOrderArr);
             console.log("notes: ", notes);
-            const newHistory = history.concat(
-              {
-                title: new Date().toLocaleString(),
-                data: [
-                  {
-                    notes: notes,
-                    order: currOrderArr,
-                  },
-                ],
-              }
-            );
+            const newHistory = history.concat({
+              title: new Date().toLocaleString(),
+              data: [
+                {
+                  notes: notes,
+                  order: currOrderArr,
+                },
+              ],
+            });
             storeData(newHistory);
 
             // TODO: send this order info to the Kitchen's queue
@@ -125,15 +125,15 @@ const Cart = (props) => {
     );
   }
 
-  let confirmationView = "";
+  let confirmationView = null;
   if (confirmationMessage) {
     confirmationView = (
       <View>
         <Text style={styles.confirmation}>Order Submitted!</Text>
         <View style={styles.doneButton}>
           <Button
-            title="Done"
-            color="green"
+            title={"Done"}
+            color={"green"}
             onPress={() => {
               props.navigation.navigate("Home");
             }}
@@ -143,29 +143,32 @@ const Cart = (props) => {
     );
   }
 
-  let tempHistoryView = ""
+  let tempHistoryView = null;
   if (showHistory) {
-    tempHistoryView =
-    <View>
-      <SectionList
-        sections={history}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
-          <View>
-            <Text>Notes: {item.notes}</Text>
-            <Text>
-              {item.order.map(
-                (obj) => `${obj.quantity} order(s) of ${obj.name} (${obj.category})\n`
-              )}
-            </Text>
-          </View>
-        )}
-        renderSectionHeader={({ section: { title } }) =>
-          <View style={{paddingTop: 10}}>
-            <Text>{title}</Text>
-          </View>}
-      />
-    </View>
+    tempHistoryView = (
+      <View>
+        <SectionList
+          sections={history}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => (
+            <View>
+              <Text>Notes: {item.notes}</Text>
+              <Text>
+                {item.order.map(
+                  (obj) =>
+                    `${obj.quantity} order(s) of ${obj.name} (${obj.category})\n`
+                )}
+              </Text>
+            </View>
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <View style={{ paddingTop: 10 }}>
+              <Text>{title}</Text>
+            </View>
+          )}
+        />
+      </View>
+    );
   }
 
   //console.log("currValue in Cart.js:", currentValue)
@@ -196,7 +199,7 @@ const Cart = (props) => {
       {tempHistoryView}
 
       <Button
-        title="Clear async memory"
+        title={"Clear async memory"}
         onPress={() => {
           clearAll();
         }}
@@ -238,8 +241,6 @@ const styles = StyleSheet.create({
 });
 
 export default Cart;
-
-
 
 // Data structure for the order
 // const testHistory = [
