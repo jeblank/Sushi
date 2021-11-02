@@ -23,7 +23,7 @@ const Home = ({navigation}) => {
                 onPress = {() =>
                   navigation.navigate('Cart', {tableNum: 10})
                 } />
-        <Button title="Kitchen Login"
+        <Button title="Kitchen"
                 onPress = {() =>
                   navigation.navigate('Kitchen')
                 } />

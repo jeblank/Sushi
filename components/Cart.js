@@ -21,8 +21,23 @@ const Cart = (props) => {
 
   const { currentValue, setCurrentValue } = useValue();
   const currOrderArr = currentValue.currOrder;
+  const queue = currentValue.queue;
   const updateData = () => {
-    setCurrentValue([]);
+    // maybe change this to newQueueEntry with proper structure?
+    //queue.push(currOrderArr)
+    const queueEntry = {
+      title: `Table ${tableNum}`,
+      data: [
+        {
+          order: currOrderArr,
+          notes: notes,
+          timestamp: new Date().toLocaleString()
+        }
+      ]
+    }
+    queue.push(queueEntry)
+
+    setCurrentValue({currOrder: [], queue: queue});
   };
 
   let currOrderArrView = null;

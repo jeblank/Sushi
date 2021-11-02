@@ -13,13 +13,14 @@ const Order = ({navigation}) => {
   const [currOrder, setCurrOrder] = useState([]);
   const [str, setStr] = useState("");
   const {currentValue, setCurrentValue} = useValue();
+  const queue = currentValue.queue;
 
   useEffect(() => {
     setStr("")
   });
 
   const updateData = () => {
-    setCurrentValue({currOrder: currOrder})
+    setCurrentValue({currOrder: currOrder, queue: queue})
   }
 
   const updateCurrOrderStr = () => {
