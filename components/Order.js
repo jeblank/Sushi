@@ -10,6 +10,7 @@ const DATA = sushiMenu.map((x) => {
 })
 
 const Order = ({navigation}) => {
+  console.log("navigation:", navigation)
   const [currOrder, setCurrOrder] = useState([]);
   const [str, setStr] = useState("");
   const {currentValue, setCurrentValue} = useValue();

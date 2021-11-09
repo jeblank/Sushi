@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Button } from 'react-native';
+import { Text, View, StyleSheet, Image, Button,
+  // AppRegistry,
+  // TouchableOpacity,
+  // Linking
+} from 'react-native';
+
+import Camera from './Camera';
+
+//import QRCodeScanner from 'react-native-qrcode-scanner';
 
 const Home = ({navigation}) => {
   return (
@@ -29,9 +37,9 @@ const Home = ({navigation}) => {
                 } />
       </View>
 
-      <Text style={{textAlign: "center"}}>Order a round of sushi by scanning the QR code on your table.</Text>
-      <Text style={{textAlign: "center"}}>[Insert QR scanner here]</Text>
+      <Text style={{textAlign: "center", paddingBottom: 10}}>Order a round of sushi by scanning the QR code on your table.</Text>
 
+      <Camera />
 
     </View>
   );
@@ -63,3 +71,20 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
+
+// <QRCodeScanner
+//   onRead={this.onSuccess}
+//   flashMode={RNCamera.Constants.FlashMode.torch}
+//   topContent={
+//     <Text style={styles.centerText}>
+//       Go to{' '}
+//       <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
+//       your computer and scan the QR code.
+//     </Text>
+//   }
+//   bottomContent={
+//     <TouchableOpacity style={styles.buttonTouchable}>
+//       <Text style={styles.buttonText}>OK. Got it!</Text>
+//     </TouchableOpacity>
+//   }
+// />
