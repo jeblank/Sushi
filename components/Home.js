@@ -31,6 +31,8 @@ const Home = ({navigation}) => {
 
       <Text style={{textAlign: "center"}}>Order a round of sushi by scanning the QR code on your table.</Text>
       <Text style={{textAlign: "center"}}>[Insert QR scanner here]</Text>
+
+
     </View>
   );
 };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
 import Home from './components/Home';
 import About from './components/About';
@@ -16,9 +16,15 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   const data = {currOrder: [], queue: []};
 
+  const Header = () => {
+    return (
+      <Text style={styles.header}>You're signed into Table 10.</Text>
+    )
+  }
+
   return (
     <ValueProvider value = {data}>
-      <ScreenTemplate footer={<Text  style={{fontSize:32}}>this is the footer </Text>} >
+      <ScreenTemplate header={<Header />}>
         <NavigationContainer>
           <Stack.Navigator>
 
@@ -36,3 +42,11 @@ const App = () => {
 }
 
 export default App;
+
+const styles = StyleSheet.create({
+  header: {
+    fontSize: 20,
+    textAlign: 'center',
+    paddingTop: 10
+  }
+});

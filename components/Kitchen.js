@@ -70,7 +70,7 @@ const Kitchen = ({navigation}) => {
         <View style={{flexDirection: 'row'}}>
           <SectionList
             sections={queueHistory}
-            keyExtractor={(item, index) => item + index}
+            keyExtractor={(item, index) => index}
             renderItem={({ item }) => (
               <View>
                 <Text>Submitted: {item.timestamp}</Text>
@@ -81,6 +81,11 @@ const Kitchen = ({navigation}) => {
                   )}
                 </Text>
                 <Text>Notes: {item.notes}</Text>
+                <Button title="test"
+                        onPress={(() => {
+                          console.log(queueHistory)
+                          console.log(item)
+                        })} />
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (
@@ -91,7 +96,11 @@ const Kitchen = ({navigation}) => {
           />
           <View style={{alignSelf: "flex-start"}}>
             <Button title="Complete"
-                    color="green" />
+                    color="green"
+                    onPress={(() => {
+                      console.log("remove this item from the queue. figure out how to get my key")
+                      //console.log(item)
+                    })} />
           </View>
         </View>
       </View>
