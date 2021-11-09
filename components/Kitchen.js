@@ -1,48 +1,98 @@
-// TODO: add async storage for preserving queue
-
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, SectionList, Button } from 'react-native';
 import { useValue } from './ValueContext';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Kitchen = ({navigation}) => {
+  const [queueHistory, setQueueHistory] = useState([]);
   const {currentValue, setCurrentValue} = useValue();
-  const queue = currentValue.queue;
+  let queue = currentValue.queue;
 
-  // console.log("queue in Kitchen:", queue)
-  // console.log(Object.keys(queue))
+  useEffect(() => {
+    getData();
+    // TODO: maybe call storeData here as well?
+  }, []);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@queueHistory");
+      let json = null;
+      if (jsonValue != null && jsonValue != "[]") {
+        json = JSON.parse(jsonValue);
+        setQueueHistory(json);
+      } else {
+        console.log("just read a null value from storage");
+        setQueueHistory(queue);
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  };
+
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("@queueHistory", jsonValue);
+      console.log("just stored ", jsonValue)
+    } catch(e) {
+      console.log("error in storeData");
+      console.log(e);
+    }
+  }
+
+  const clearAll = async () => {
+    try {
+      await AsyncStorage.clear();
+    } catch(e) {
+      console.log(e);
+    }
+  }
 
   let queueView = null;
-  if (queue.length === 0) {
+  if (queueHistory.length === 0) {
     queueView = (
       <Text style={{textAlign: "center"}}>No orders yet!</Text>
     )
   } else {
     queueView = (
-      <View style={{flexDirection: 'row'}}>
-        <SectionList
-          sections={queue}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => (
-            <View>
-              <Text>Submitted: {item.timestamp}</Text>
-              <Text style={{paddingTop: 5, paddingBottom: 5}}>
-                {item.order.map(
-                  (obj) =>
-                    `${obj.quantity} order(s) of ${obj.name} (${obj.category})\n`
-                )}
-              </Text>
-              <Text>Notes: {item.notes}</Text>
-            </View>
-          )}
-          renderSectionHeader={({ section: { title } }) => (
-            <View style={{ paddingTop: 10 }}>
-              <Text style={{fontWeight: "bold", fontSize: 20}}>{title}</Text>
-            </View>
-          )}
-        />
-        <View style={{alignSelf: "flex-start"}}>
-          <Button title="Complete"
-                  color="green" />
+      <View>
+        <View style={{paddingBottom: 10}}>
+          <Button title="Save Queue to AsyncStorage"
+                  onPress={(() => {
+                    console.log("calling storeData with ", queue)
+                    storeData(queue)
+                  })} />
+          <Button title="Clear AsyncStorage"
+                  onPress={(() => {
+                    clearAll();
+                  })} />
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <SectionList
+            sections={queueHistory}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item }) => (
+              <View>
+                <Text>Submitted: {item.timestamp}</Text>
+                <Text style={{paddingTop: 5, paddingBottom: 5}}>
+                  {item.order.map(
+                    (obj) =>
+                      `${obj.quantity} order(s) of ${obj.name} (${obj.category})\n`
+                  )}
+                </Text>
+                <Text>Notes: {item.notes}</Text>
+              </View>
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <View style={{ paddingTop: 10 }}>
+                <Text style={{fontWeight: "bold", fontSize: 20}}>{title}</Text>
+              </View>
+            )}
+          />
+          <View style={{alignSelf: "flex-start"}}>
+            <Button title="Complete"
+                    color="green" />
+          </View>
         </View>
       </View>
     )

@@ -129,11 +129,8 @@ const Cart = (props) => {
               ],
             });
             storeData(newHistory);
-
-            // TODO: send this order info to the Kitchen's queue
-
             setConfirmationMessage(true);
-            updateData();
+            updateData(); // Send this order info to the Kitchen's queue
           }}
         />
       </View>
