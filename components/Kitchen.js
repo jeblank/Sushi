@@ -83,7 +83,7 @@ const Kitchen = ({navigation}) => {
                 <Text>Notes: {item.notes}</Text>
                 <Button title="test"
                         onPress={(() => {
-                          console.log(queueHistory)
+                          console.log("queueHistory: ", queueHistory)
                           console.log(item)
                         })} />
               </View>
@@ -98,7 +98,7 @@ const Kitchen = ({navigation}) => {
             <Button title="Complete"
                     color="green"
                     onPress={(() => {
-                      console.log("remove this item from the queue. figure out how to get my key")
+                      //console.log("remove this item from the queue. figure out how to get my key")
                       //console.log(item)
                     })} />
           </View>

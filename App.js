@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, StyleSheet, View, Button } from 'react-native';
@@ -9,19 +9,14 @@ import Order from './components/Order';
 import Kitchen from './components/Kitchen';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
+import Header from './components/Header';
 import ValueProvider from './components/ValueContext'
 import ScreenTemplate from './containers/ScreenTemplate';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const data = {currOrder: [], queue: []};
-
-  const Header = () => {
-    return (
-      <Text style={styles.header}>You're signed into Table 10.</Text>
-    )
-  }
+  const data = {currOrder: [], queue: [], tableNum: -1};
 
   return (
     <ValueProvider value = {data}>
@@ -46,9 +41,9 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    paddingTop: 10
-  }
+  // header: {
+  //   fontSize: 20,
+  //   textAlign: 'center',
+  //   paddingTop: 10
+  // }
 });
