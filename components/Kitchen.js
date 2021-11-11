@@ -48,6 +48,10 @@ const Kitchen = ({navigation}) => {
     }
   }
 
+  const removeFromQueue = (item) => {
+    // TODO: Find the item in the queue
+  }
+
   let queueView = null;
   if (queueHistory.length === 0) {
     queueView = (
@@ -84,7 +88,8 @@ const Kitchen = ({navigation}) => {
                 <Button title="test"
                         onPress={(() => {
                           console.log("queueHistory: ", queueHistory)
-                          console.log(item)
+                          console.log("item: ", item)
+                          removeFromQueue(item)
                         })} />
               </View>
             )}
