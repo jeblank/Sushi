@@ -6,8 +6,15 @@ const Header = () => {
   const {currentValue, setCurrentValue} = useValue();
   const currTableNum = currentValue.tableNum;
 
+  let text = null;
+  if (!currTableNum) {
+    text = "Please input your table number!"
+  } else {
+    text = `You're signed into Table ${currTableNum}.`
+  }
+
   return (
-    <Text style={styles.header}>You're signed into Table {currTableNum}.</Text>
+    <Text style={styles.header}>{text}</Text>
   )
 }
 

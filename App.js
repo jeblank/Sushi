@@ -16,7 +16,7 @@ import ScreenTemplate from './containers/ScreenTemplate';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const data = {currOrder: [], queue: [], tableNum: -1};
+  const data = {currOrder: [], queue: [], tableNum: null};
 
   return (
     <ValueProvider value = {data}>
