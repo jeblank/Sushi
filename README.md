@@ -1,11 +1,16 @@
-# Sample Snack app
+# All-You-Can-Eat Sushi
 
-Open the `App.js` file to start writing some code. You can preview the changes directly on your phone or tablet by scanning the **QR code** or use the iOS or Android emulators. When you're done, click **Save** and share the link!
+### About
+The inspiration for this project came during a visit to Nijiya Sushi in Medford, Massachusetts.
+I was sitting right next to the kitchen door, so I got a clear view of how the servers appeared to be taking care of the customers. During this time, I noticed some clear gaps in effeciency and was inspired to try to create a elegant and streamlined solution for their restaurant. See my "About"
+page for the rest of the story!
 
-When you're ready to see everything that Expo provides (or if you want to use your own editor) you can **Download** your project and use it with [expo-cli](https://docs.expo.io/get-started/installation).
 
-All projects created in Snack are publicly available, so you can easily share the link to this project via link, or embed it on a web page with the `<>` button.
+### Developer Notes
+Clone the project, navigate into it's directory ("sushi"), and run "npm install".
+Current notable dependencies include Async Storage and Camera. In the coming weeks, I
+plan to also include QR Code Scanner dependencies, cloud server and storage, and
+user authentication for Kitchen admins.
 
-If you're having problems, you can tweet to us [@expo](https://twitter.com/expo) or ask in our [forums](https://forums.expo.io/c/snack).
-
-Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
+### Screenshots
+Coming soon! I have significant updates to make. Once those are done, screenshots will be added.
