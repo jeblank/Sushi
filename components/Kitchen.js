@@ -85,12 +85,7 @@ const Kitchen = ({navigation}) => {
                   )}
                 </Text>
                 <Text>Notes: {item.notes}</Text>
-                <Button title="test"
-                        onPress={(() => {
-                          console.log("queueHistory: ", queueHistory)
-                          console.log("item: ", item)
-                          removeFromQueue(item)
-                        })} />
+                
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (

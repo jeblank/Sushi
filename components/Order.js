@@ -15,6 +15,8 @@ const Order = ({navigation}) => {
   const {currentValue, setCurrentValue} = useValue();
   const queue = currentValue.queue;
 
+  console.log("QUEUE IN ORDER:", queue)
+
   useEffect(() => {
     setStr("")
   });

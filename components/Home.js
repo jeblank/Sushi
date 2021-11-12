@@ -6,7 +6,10 @@ import Camera from './Camera';
 const Home = ({navigation}) => {
   const {currentValue, setCurrentValue} = useValue();
   const currTableNum = currentValue.tableNum;
+  const queue = currentValue.queue;
   const [num, setNum] = useState(currTableNum);
+
+  console.log("QUEUE IN HOME:", queue)
 
   return (
     <ScrollView>
@@ -42,7 +45,7 @@ const Home = ({navigation}) => {
           <Text>Enter table number here: </Text>
           <TextInput placeholder="ex: 10"
                      onChangeText={((text) => {
-                       setCurrentValue({tableNum: parseInt(text)})
+                       setCurrentValue({tableNum: parseInt(text), queue: queue})
                        setNum(text)
                      })} />
         </View>

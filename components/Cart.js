@@ -22,6 +22,9 @@ const Cart = (props) => {
   const { currentValue, setCurrentValue } = useValue();
   const currOrderArr = currentValue.currOrder;
   const queue = currentValue.queue;
+
+  console.log("QUEUE IN CART:", queue)
+
   const updateData = () => {
     // maybe change this to newQueueEntry with proper structure?
     //queue.push(currOrderArr)
