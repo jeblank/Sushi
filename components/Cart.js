@@ -17,11 +17,12 @@ const Cart = (props) => {
   const [history, setHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(false);
-  const tableNum = props.route.params.tableNum;
+  //const tableNum = props.route.params.tableNum;
 
-  const { currentValue, setCurrentValue } = useValue();
+  const {currentValue, setCurrentValue} = useValue();
   const currOrderArr = currentValue.currOrder;
   const queue = currentValue.queue;
+  const tableNum = currentValue.tableNum;
 
   console.log("QUEUE IN CART:", queue)
 
@@ -192,7 +193,7 @@ const Cart = (props) => {
   return (
     <View>
       <Text style={styles.header}>
-        Current Order for Table Number {tableNum}
+        Current Order for Table Number {tableNum}:
       </Text>
 
       {currOrderArrView}

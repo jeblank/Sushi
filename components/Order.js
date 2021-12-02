@@ -14,6 +14,7 @@ const Order = ({navigation}) => {
   const [str, setStr] = useState("");
   const {currentValue, setCurrentValue} = useValue();
   const queue = currentValue.queue;
+  const tableNum = currentValue.tableNum;
 
   console.log("QUEUE IN ORDER:", queue)
 
@@ -22,7 +23,7 @@ const Order = ({navigation}) => {
   });
 
   const updateData = () => {
-    setCurrentValue({currOrder: currOrder, queue: queue})
+    setCurrentValue({currOrder: currOrder, queue: queue, tableNum: tableNum})
   }
 
   const updateCurrOrderStr = () => {
