@@ -68,7 +68,7 @@ const Kitchen = ({navigation}) => {
             sections={queue}
             keyExtractor={(item, index) => index}
             renderItem={({ item }) => (
-              <View>
+              <View style={{paddingBottom: 20}}>
                 <Text>Submitted: {item.timestamp}</Text>
                 <Text style={{paddingTop: 5, paddingBottom: 5}}>
                   {item.order.map(
@@ -77,7 +77,6 @@ const Kitchen = ({navigation}) => {
                   )}
                 </Text>
                 <Text>Notes: {item.notes}</Text>
-
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (

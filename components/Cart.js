@@ -20,6 +20,7 @@ const Cart = (props) => {
   const [showCurrOrderArrView, setShowCurrOrderArrView] = useState(true);
   const [showHeaderView, setShowHeaderView] = useState(true);
   const [showHistoryButtonView, setShowHistoryButtonView] = useState(true);
+  const [num, setNum] = useState();
 
   const {currentValue, setCurrentValue} = useValue();
   const currOrderArr = currentValue.currOrder;
@@ -196,11 +197,29 @@ const Cart = (props) => {
 
   let headerView = null;
   if (showHeaderView) {
-    headerView = (
-      <Text style={styles.header}>
-        Current Order for Table Number {tableNum}:
-      </Text>
-    )
+    if (tableNum) {
+      headerView = (
+        <Text style={styles.header}>
+          Current Order for Table Number {tableNum}:
+        </Text>
+      )
+    } else {
+      headerView = (
+        <View style={styles.textinput}>
+          <Text style={styles.header}>Please enter your table number: </Text>
+          <TextInput placeholder="ex: 10"
+                     onChangeText={((text) => {
+                       setNum(parseInt(text))
+                     })} />
+           <Button title="Save table number"
+                   onPress={() => {
+                     if (num) {
+                       setCurrentValue({tableNum: num, queue: queue, currOrderArr: currOrderArr})
+                     }
+                   }} />
+        </View>
+      )
+    }
   }
 
   let historyButtonView = null;
@@ -279,6 +298,12 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     alignSelf: 'center',
+  },
+  textinput: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 10,
+    paddingBottom: 10
   }
 });
 
