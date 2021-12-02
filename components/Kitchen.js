@@ -4,9 +4,9 @@ import { useValue } from './ValueContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Kitchen = ({navigation}) => {
-  const [queueHistory, setQueueHistory] = useState([]);
+  const [queue, setQueue] = useState([]);
   const {currentValue, setCurrentValue} = useValue();
-  let queue = currentValue.queue;
+  let queueFromCurrValue = currentValue.queue;
 
   useEffect(() => {
     getData();
@@ -19,10 +19,10 @@ const Kitchen = ({navigation}) => {
       let json = null;
       if (jsonValue != null && jsonValue != "[]") {
         json = JSON.parse(jsonValue);
-        setQueueHistory(json);
+        setQueue(json);
       } else {
         console.log("just read a null value from storage");
-        setQueueHistory(queue);
+        setQueue(queueFromCurrValue);
       }
     } catch(e) {
       console.log(e);
@@ -48,12 +48,8 @@ const Kitchen = ({navigation}) => {
     }
   }
 
-  const removeFromQueue = (item) => {
-    // TODO: Find the item in the queue
-  }
-
   let queueView = null;
-  if (queueHistory.length === 0) {
+  if (queue.length === 0) {
     queueView = (
       <Text style={{textAlign: "center"}}>No orders yet!</Text>
     )
@@ -63,17 +59,13 @@ const Kitchen = ({navigation}) => {
         <View style={{paddingBottom: 10}}>
           <Button title="Save Queue to AsyncStorage"
                   onPress={(() => {
-                    console.log("calling storeData with ", queue)
-                    storeData(queue)
-                  })} />
-          <Button title="Clear AsyncStorage"
-                  onPress={(() => {
-                    clearAll();
+                    console.log("calling storeData with ", queueFromCurrValue)
+                    storeData(queueFromCurrValue)
                   })} />
         </View>
         <View style={{flexDirection: 'row'}}>
           <SectionList
-            sections={queueHistory}
+            sections={queue}
             keyExtractor={(item, index) => index}
             renderItem={({ item }) => (
               <View>
@@ -85,7 +77,7 @@ const Kitchen = ({navigation}) => {
                   )}
                 </Text>
                 <Text>Notes: {item.notes}</Text>
-                
+
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (
@@ -98,8 +90,10 @@ const Kitchen = ({navigation}) => {
             <Button title="Complete"
                     color="green"
                     onPress={(() => {
-                      //console.log("remove this item from the queue. figure out how to get my key")
-                      //console.log(item)
+                      console.log("removing first item from queue")
+                      const temp = [...queue]
+                      temp.shift()
+                      setQueue(temp)
                     })} />
           </View>
         </View>
@@ -110,7 +104,15 @@ const Kitchen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Order Queue</Text>
+
       {queueView}
+
+      <View style={{paddingTop: 30}}>
+        <Button title="Clear async memory (remove after debugging)"
+                onPress={(() => {
+                  clearAll();
+                })} />
+      </View>
     </View>
   )
 }
