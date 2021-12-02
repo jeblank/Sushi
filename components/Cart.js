@@ -19,13 +19,12 @@ const Cart = (props) => {
   const [confirmationMessage, setConfirmationMessage] = useState(false);
   const [showCurrOrderArrView, setShowCurrOrderArrView] = useState(true);
   const [showHeaderView, setShowHeaderView] = useState(true);
+  const [showHistoryButtonView, setShowHistoryButtonView] = useState(true);
 
   const {currentValue, setCurrentValue} = useValue();
   const currOrderArr = currentValue.currOrder;
   const queue = currentValue.queue;
   const tableNum = currentValue.tableNum;
-
-  console.log("QUEUE IN CART:", queue)
 
   const updateData = () => {
     // maybe change this to newQueueEntry with proper structure?
@@ -42,7 +41,7 @@ const Cart = (props) => {
     }
     queue.push(queueEntry)
 
-    setCurrentValue({currOrder: [], queue: queue});
+    setCurrentValue({currOrder: [], queue: queue, tableNum: tableNum});
   };
 
   let currOrderArrView = null;
@@ -121,27 +120,30 @@ const Cart = (props) => {
             }}
           />
         </View>
-        <Button
-          title="Submit Order"
-          onPress={() => {
-            console.log("order: ", currOrderArr);
-            console.log("notes: ", notes);
-            const newHistory = history.concat({
-              title: new Date().toLocaleString(),
-              data: [
-                {
-                  notes: notes,
-                  order: currOrderArr,
-                },
-              ],
-            });
-            storeData(newHistory);
-            setConfirmationMessage(true);
-            setShowCurrOrderArrView(false);
-            setShowHeaderView(false);
-            updateData(); // Send this order info to the Kitchen's queue
-          }}
-        />
+        <View style={styles.button}>
+          <Button
+            title="Submit Order"
+            onPress={() => {
+              // console.log("order: ", currOrderArr);
+              // console.log("notes: ", notes);
+              const newHistory = history.concat({
+                title: new Date().toLocaleString(),
+                data: [
+                  {
+                    notes: notes,
+                    order: currOrderArr,
+                  },
+                ],
+              });
+              storeData(newHistory);
+              setConfirmationMessage(true);
+              setShowCurrOrderArrView(false);
+              setShowHeaderView(false);
+              setShowHistoryButtonView(false);
+              updateData(); // Send this order info to the Kitchen's queue
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -201,6 +203,21 @@ const Cart = (props) => {
     )
   }
 
+  let historyButtonView = null;
+  if (showHistoryButtonView) {
+    historyButtonView = (
+      <View style={styles.history}>
+        <Button
+          title={showHistory ? "Hide Order History" : "Show Order History"}
+          color="orange"
+          onPress={() => {
+            setShowHistory(!showHistory);
+          }}
+        />
+      </View>
+    )
+  }
+
   return (
     <View>
       {headerView}
@@ -211,24 +228,18 @@ const Cart = (props) => {
 
       {submitView}
 
-      <View style={styles.history}>
-        <Button
-          title={showHistory ? "Hide History" : "Show History"}
-          onPress={() => {
-            setShowHistory(!showHistory);
-          }}
-          style={styles.history}
-        />
-      </View>
+      {historyButtonView}
 
       {tempHistoryView}
 
-      <Button
-        title={"Clear async memory"}
-        onPress={() => {
-          clearAll();
-        }}
-      />
+      <View style={{paddingTop: 30}}>
+        <Button
+          title={"Clear async memory (remove after debugging)"}
+          onPress={() => {
+            clearAll();
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -248,7 +259,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   history: {
-    padding: 20,
+    paddingTop: 20,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   confirmation: {
     textAlign: "center",
@@ -262,7 +275,15 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 30,
     paddingRight: 30,
+    //alignSelf: "flex-start",
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
+  button: {
+    //alignSelf: "flex-start",
+    justifyContent: 'center',
+    alignSelf: 'center',
+  }
 });
 
 export default Cart;
