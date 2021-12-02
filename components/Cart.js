@@ -123,6 +123,7 @@ const Cart = (props) => {
         <View style={styles.button}>
           <Button
             title="Submit Order"
+            color="green"
             onPress={() => {
               // console.log("order: ", currOrderArr);
               // console.log("notes: ", notes);
@@ -156,7 +157,6 @@ const Cart = (props) => {
         <View style={styles.doneButton}>
           <Button
             title={"Done"}
-            color={"green"}
             onPress={() => {
               props.navigation.navigate("Home");
             }}
@@ -268,19 +268,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "green",
     paddingTop: 10,
-    fontSize: 15,
+    fontSize: 25,
   },
   doneButton: {
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 30,
     paddingRight: 30,
-    //alignSelf: "flex-start",
     justifyContent: 'center',
     alignSelf: 'center',
   },
   button: {
-    //alignSelf: "flex-start",
     justifyContent: 'center',
     alignSelf: 'center',
   }

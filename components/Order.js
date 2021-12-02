@@ -5,22 +5,44 @@ import { useValue } from './ValueContext';
 
 // Read in the JSON data file
 const sushiMenu = SushiMenu();
-const DATA = sushiMenu.map((x) => {
+let DATA = sushiMenu.map((x) => {
   return(x)
 })
 
 const Order = ({navigation}) => {
   const [currOrder, setCurrOrder] = useState([]);
   const [str, setStr] = useState("");
+  const [search, setSearch] = useState("");
+  const [menu, setMenu] = useState(DATA);
   const {currentValue, setCurrentValue} = useValue();
   const queue = currentValue.queue;
   const tableNum = currentValue.tableNum;
 
-  console.log("QUEUE IN ORDER:", queue)
-
   useEffect(() => {
     setStr("")
   });
+
+  useEffect(() => {
+    // Filter the menu according to search
+    if (search) {
+      const tempMenu = SushiMenu();
+      const result = tempMenu.map((x) => {
+        x.items = x.items.filter((item) => {
+          return (
+            item.title.toLowerCase().includes(search) ||
+            (item.description.toLowerCase().includes(search) && item.description !== "temp")
+          )
+        })
+        return (x)
+      })
+      setMenu(result)
+    } else {
+      const result = sushiMenu.map((x) => {
+        return (x)
+      })
+      setMenu(result)
+    }
+  }, [search])
 
   const updateData = () => {
     setCurrentValue({currOrder: currOrder, queue: queue, tableNum: tableNum})
@@ -84,7 +106,6 @@ const Order = ({navigation}) => {
               <View styles={{flexDirection: "row", textAlign: 'center'}}>
                 <TextInput placeholder = "0"
                            onChangeText = {(text) => {
-                             //console.log("quantity of ", x.title, parseInt(text))
                              addItemToOrder(x.title, parseInt(text), item.category)
                            }} />
 
@@ -101,8 +122,6 @@ const Order = ({navigation}) => {
               <View styles={{flexDirection: "row", textAlign: 'center'}}>
                 <TextInput placeholder = "0"
                            onChangeText = {(text) => {
-                             //console.log("Quantity text changed")
-                             //console.log("quantity of ", x.title, parseInt(text))
                              addItemToOrder(x.title, parseInt(text), item.category)
                            }} />
 
@@ -120,27 +139,26 @@ const Order = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Sushi Menu</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Search for a roll"
-      />
+
+      <TextInput style={styles.input}
+                 placeholder="Search for a roll or ingredient"
+                 onChangeText = {(text) => {
+                   setSearch(text.toLowerCase())
+                 }} />
 
       <Text>Current Order:</Text>
       {currOrderView}
 
-      <FlatList
-        data={DATA}
-        renderItem={renderCategory}
-        keyExtractor={item => item.id}
-      />
-      <Button
-         title = "Next"
-         onPress = {() => {
-              console.log("Next pressed")
-              updateData()
-              navigation.navigate('Cart', {tableNum: 10})
-         }}
-      />
+      <FlatList data={menu}
+                renderItem={renderCategory}
+                keyExtractor={item => item.id} />
+
+      <Button title = "Next"
+              onPress = {() => {
+                   console.log("Next pressed")
+                   updateData()
+                   navigation.navigate('Cart', {tableNum: 10})
+              }} />
     </SafeAreaView>
   );
 }
