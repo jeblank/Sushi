@@ -17,7 +17,8 @@ const Cart = (props) => {
   const [history, setHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState(false);
-  //const tableNum = props.route.params.tableNum;
+  const [showCurrOrderArrView, setShowCurrOrderArrView] = useState(true);
+  const [showHeaderView, setShowHeaderView] = useState(true);
 
   const {currentValue, setCurrentValue} = useValue();
   const currOrderArr = currentValue.currOrder;
@@ -45,25 +46,27 @@ const Cart = (props) => {
   };
 
   let currOrderArrView = null;
-  if (currOrderArr == undefined || currOrderArr.length === 0) {
-    currOrderArrView = (
-      <View>
-        <Text style={{ textAlign: "center" }}>Your cart is empty!</Text>
-        <Text style={{ textAlign: "center" }}>
-          Add some sushi to your cart to submit an order.
-        </Text>
-      </View>
-    );
-  } else {
-    currOrderArrView = currOrderArr.map((x) => {
-      return (
+  if (showCurrOrderArrView) {
+    if (currOrderArr == undefined || currOrderArr.length === 0) {
+      currOrderArrView = (
         <View>
-          <Text>
-            {x.quantity} order(s) of {x.name} ({x.category})
+          <Text style={{ textAlign: "center" }}>Your cart is empty!</Text>
+          <Text style={{ textAlign: "center" }}>
+            Add some sushi to your cart to submit an order.
           </Text>
         </View>
       );
-    });
+    } else {
+      currOrderArrView = currOrderArr.map((x) => {
+        return (
+          <View>
+            <Text>
+              {x.quantity} order(s) of {x.name} ({x.category})
+            </Text>
+          </View>
+        );
+      });
+    }
   }
 
   useEffect(() => {
@@ -134,6 +137,8 @@ const Cart = (props) => {
             });
             storeData(newHistory);
             setConfirmationMessage(true);
+            setShowCurrOrderArrView(false);
+            setShowHeaderView(false);
             updateData(); // Send this order info to the Kitchen's queue
           }}
         />
@@ -187,14 +192,18 @@ const Cart = (props) => {
     );
   }
 
-  //console.log("currValue in Cart.js:", currentValue)
-  //console.log("history in Cart.js:", history)
-
-  return (
-    <View>
+  let headerView = null;
+  if (showHeaderView) {
+    headerView = (
       <Text style={styles.header}>
         Current Order for Table Number {tableNum}:
       </Text>
+    )
+  }
+
+  return (
+    <View>
+      {headerView}
 
       {currOrderArrView}
 
