@@ -5,10 +5,12 @@ The inspiration for this project came during a visit to Nijiya Sushi in Medford,
 I was sitting right next to the kitchen door, so I got a clear view of how the servers appeared to be taking care of the customers. During this time, I noticed some clear gaps in effeciency and was inspired to try to create a elegant and streamlined solution for their restaurant. See my "About"
 page for the rest of the story!
 
-
 ### Developer Notes
 Clone the project, navigate into it's directory ("sushi"), and run "npm install".
-Current notable dependencies include Async Storage and Camera. I attempted to add QR Code Scanner dependencies, but was not able to get it working properly.
+Current notable dependencies include Async Storage and Camera. I attempted to add QR Code Scanner dependencies, but I was not able to get it working properly.
+
+### Demo Video
+https://drive.google.com/file/d/1E6gOUPHld8OCknDKh2-1dynlJnkW2CAW/view?usp=sharing
 
 ### Screenshots
 
