@@ -10,7 +10,7 @@ Clone the project, navigate into it's directory ("sushi"), and run "npm install"
 Current notable dependencies include Async Storage and Camera. I attempted to add QR Code Scanner dependencies, but I was not able to get it working properly.
 
 ### Demo Video
-https://drive.google.com/file/d/1E6gOUPHld8OCknDKh2-1dynlJnkW2CAW/view?usp=sharing
+https://drive.google.com/file/d/1stO1HShxxSr77HvaZJ6qio5pt5WcGNDB/view?usp=sharing
 
 ### Screenshots
 
