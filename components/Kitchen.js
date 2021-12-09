@@ -106,12 +106,6 @@ const Kitchen = ({navigation}) => {
 
       {queueView}
 
-      <View style={{paddingTop: 30}}>
-        <Button title="Clear async memory (remove after debugging)"
-                onPress={(() => {
-                  clearAll();
-                })} />
-      </View>
     </View>
   )
 }

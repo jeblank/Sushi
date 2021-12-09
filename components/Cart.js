@@ -250,13 +250,6 @@ const Cart = (props) => {
       {historyButtonView}
 
       {tempHistoryView}
-
-      <View style={{paddingTop: 30}}>
-        <Button title="Clear async memory (remove after debugging)"
-                onPress={() => {
-                  clearAll();
-                }} />
-      </View>
     </View>
   );
 };

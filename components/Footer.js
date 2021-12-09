@@ -6,7 +6,6 @@ const Footer = ({navigation}) => {
     <View>
       <Button title="About"
               onPress={(() => {
-                //navigation.navigate('About')
                 console.log("navigation:", navigation)
               })} />
     </View>

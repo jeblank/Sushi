@@ -9,8 +9,6 @@ const Home = ({navigation}) => {
   const queue = currentValue.queue;
   const [num, setNum] = useState(currTableNum);
 
-  //console.log("QUEUE IN HOME:", queue)
-
   return (
     <ScrollView>
       <View>

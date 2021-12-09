@@ -21,11 +21,8 @@ const CameraTest = () => {
   }
 
   return (
-
     <View style={{alignItems: 'center'}}>
-
       <Camera style={styles.camera} type={type}>
-
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}
                             onPress={() => {
@@ -37,12 +34,9 @@ const CameraTest = () => {
                             }}>
             <Text style={styles.text}>Flip</Text>
           </TouchableOpacity>
-
         </View>
       </Camera>
-
     </View>
-
   );
 }
 
@@ -50,14 +44,12 @@ export default CameraTest;
 
 const styles = StyleSheet.create({
   camera: {
-    //flex: 1,
     height: '50%',
     width: '50%',
     marginLeft: 10,
     marginRight: 10,
   },
   header: {
-    // fontSize:30,
     backgroundColor:'black',
     color:'white',
     paddingTop:10,
@@ -69,7 +61,6 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   button: {
-    //flex: 0.1,
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
@@ -78,26 +69,3 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-
-
-
-// <View>
-//
-//   <Camera style={styles.camera} type={type}>
-//
-//     <View style={styles.buttonContainer}>
-//       <TouchableOpacity style={styles.button}
-//                         onPress={() => {
-//                           setType(
-//                             type === Camera.Constants.Type.back
-//                               ? Camera.Constants.Type.front
-//                               : Camera.Constants.Type.back
-//                           );
-//                         }}>
-//         <Text style={styles.text}>Flip</Text>
-//       </TouchableOpacity>
-//
-//     </View>
-//   </Camera>
-//
-// </View>
